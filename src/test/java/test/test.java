@@ -16,7 +16,7 @@ public class test {
     private String baseUrl;
     private String username;
     private String password;
-    private Object Thread;
+
 
     @BeforeEach
     public void setup() {
@@ -24,18 +24,18 @@ public class test {
         driver = Main.getDriver();
 
         baseUrl = System.getProperty("baseUrl", "https://the-internet.herokuapp.com/login");
-        username = System.getProperty("username", "tomsmithg");
+        username = System.getProperty("username", "tomsmith");
         password = System.getProperty("password", "SuperSecretPassword!");
     }
 
     @AfterEach
     public void tearDown() {
-
-        new WebDriverWait(Main.getDriver(), Duration.ofSeconds(300))
-                .until(driver -> true);
-
+        try {
+        new WebDriverWait(Main.getDriver(), Duration.ofSeconds(15)).until(driver -> false);
+        }
+        catch ( Exception ignored)
+        {}
         Main.quitDriver();
-
     }
 
     @Test
@@ -47,16 +47,73 @@ public class test {
                 .submit();
 
         assertTrue(login.isLoggedIn(), "Expected successful login.");
+        // assertTrue means the test will pass if the condition returns true
+    }
+
+    @Test public void invalidLogin_shouldFail() {
+        LoginPage login = new LoginPage(driver)
+                .open(baseUrl)
+                .enterUsername("wrongUser")
+                .enterPassword("wrongPass")
+                .submit();
+        assertFalse(login.isLoggedIn(), "Expected login to fail.");
+    }
+
+
+    @Test
+    public void correctUsername_wrongPassword_shouldFail() {
+        LoginPage login = new LoginPage(driver)
+                .open(baseUrl)
+                .enterUsername(username)        // valid
+                .enterPassword("wrongPass")     // invalid
+                .submit();
+
+        assertFalse(login.isLoggedIn(), "Expected user NOT to be logged in with wrong password.");
     }
 
     @Test
-    public void invalidLogin_shouldShowError() {
+    public void wrongUsername_validPassword_shouldFail() {
         LoginPage login = new LoginPage(driver)
                 .open(baseUrl)
-                .enterUsername("wrong")
-                .enterPassword("wrong")
+                .enterUsername("wrongUsername")        // valid
+                .enterPassword(password)     // invalid
                 .submit();
 
-        assertTrue(login.isErrorVisible(), "Expected error to be visible.");
+        assertFalse(login.isLoggedIn(), "Expected user NOT to be logged in with wrong username.");
     }
+        @Test
+    public void emptyUsername_shouldFail() {
+        LoginPage login = new LoginPage(driver)
+                .open(baseUrl)
+                .enterUsername("")
+                .enterPassword("fakePassword")
+                .submit();
+
+        assertFalse(login.isLoggedIn(), "Expected error for empty username.");
+    }
+    @Test
+    public void emptyPassword_shouldFail() {
+        LoginPage login = new LoginPage(driver)
+                .open(baseUrl)
+                .enterUsername("fakeUser")
+                .enterPassword("")
+                .submit();
+
+        assertFalse(login.isLoggedIn(), "Expected error for empty password.");
+    }
+
+    @Test
+    public void emptyCredentials_shouldFail() {
+        LoginPage login = new LoginPage(driver)
+                .open(baseUrl)
+                .enterUsername("")
+                .enterPassword("")
+                .submit();
+
+        assertFalse(login.isLoggedIn(), "Expected error when both fields are empty.");
+        // The isLoggedIn method should returns false and our test case will pass.
+
+    }
+
+
 }

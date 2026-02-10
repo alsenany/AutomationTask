@@ -6,20 +6,17 @@ import org.openqa.selenium.WebDriver;
 
 public class LoginPage extends BasePage {
 
-    // ===== Locators (update these) =====
     private final By usernameInput = By.id("username");
     private final By passwordInput = By.id("password");
     private final By loginButton = By.xpath("//*[@id='login']/button/i");
-    private final By errorBanner   = By.xpath("//*[@id='flash']");
-    private final By successMarker = By.xpath("//*[@id='content']") ;
+    private final By successMarker = By.xpath("//div[contains(text(),'You logged into a secure area!')]") ;
 
-    public LoginPage(WebDriver driver) {
+   public LoginPage(WebDriver driver) {
         super(driver);
     }
 
-
     public LoginPage open(String baseUrl) {
-        goTo(baseUrl); // If needed: goTo(baseUrl + "/login");
+        goTo(baseUrl);
         return this;
     }
 
@@ -38,13 +35,11 @@ public class LoginPage extends BasePage {
         return this;
     }
 
-    public boolean isErrorVisible() {
-        return isDisplayed(errorBanner);
-    }
-
     public boolean isLoggedIn() {
-        // Prefer a robust marker: a specific element visible on the landing page after login.
-
-        return isDisplayed(successMarker);
+       return isDisplayed(successMarker) ;
     }
+
+
+
+
 }

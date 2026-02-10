@@ -1,11 +1,9 @@
-
 package core;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 
 import java.time.Duration;
 
@@ -14,18 +12,14 @@ public class Main {
     private static final ThreadLocal<WebDriver> DRIVER = new ThreadLocal<>();
 
     public static void startDriver() {
-        String browser = System.getProperty("browser", "chrome").toLowerCase();
-        boolean headless = Boolean.parseBoolean(System.getProperty("headless", "false"));
+        String browser = System.getProperty("browser", "edge").toLowerCase();
 
         switch (browser) {
-            case "chrome" -> DRIVER.set(createChrome(headless));
+            case "chrome" -> DRIVER.set(createChrome());
+            case "edge" -> DRIVER.set(createEdge());
             default -> throw new IllegalArgumentException("Unsupported browser: " + browser);
         }
 
-        // Common timeouts
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(0)); // we rely on explicit waits
-        getDriver().manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-        getDriver().manage().timeouts().scriptTimeout(Duration.ofSeconds(30));
         getDriver().manage().window().maximize();
     }
 
@@ -45,18 +39,15 @@ public class Main {
         }
     }
 
-    private static WebDriver createChrome(boolean headless) {
+    private static WebDriver createChrome() {
         WebDriverManager.chromedriver().setup();
-        ChromeOptions options = new ChromeOptions();
-        options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-        if (headless) {
-            options.addArguments("--headless=new");
-        }
-        options.addArguments("--disable-gpu");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--remote-allow-origins=*"); // helpful in some environments
-        return new ChromeDriver(options);
+        return new ChromeDriver() ;
     }
 
+    private static WebDriver createEdge() {
+        WebDriverManager.edgedriver().setup();
+        return new org.openqa.selenium.edge.EdgeDriver(); // No EdgeOptions
+    }
 
 }
+

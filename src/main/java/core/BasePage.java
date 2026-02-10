@@ -4,7 +4,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import org.openqa.selenium.support.ui.FluentWait;
 import java.time.Duration;
 
 public abstract class BasePage {
@@ -40,10 +39,6 @@ public abstract class BasePage {
         el.sendKeys(text);
     }
 
-//    public String getText(By locator) {
-//        return waitUntilVisible(locator).getText();
-//    }
-
     public boolean isDisplayed(By locator) {
         try {
             return waitUntilVisible(locator).isDisplayed();
@@ -56,11 +51,4 @@ public abstract class BasePage {
         driver.get(url);
     }
 
-    public String getTitle() {
-        return driver.getTitle();
-    }
-
-    public String getCurrentUrl() {
-        return driver.getCurrentUrl();
-    }
 }
