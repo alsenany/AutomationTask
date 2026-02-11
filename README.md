@@ -1,4 +1,4 @@
-# QA Automation Framework (Java + Selenium + JUnit)
+# QA Automation Framework (Java + Selenium +JUnit)
 
 This project is a Page Object Model (POM) based automation framework built using Java, Selenium 4, JUnit Jupiter, and Maven.
 
@@ -49,3 +49,8 @@ qa-automation-framework/
 2- Reload Maven (or run mvn -U clean install to force update checks).
 3- If IntelliJ still shows red underlines, 
 Update Maven Indexes (Alt+Enter on the dependency → Update Maven Indexes) and try again.
+
+## Note
+
+- We expose a DriverManager interface and one implementation per browser 
+to follow SOLID principles (SRP, OCP, DIP), improve testability and parallel safety

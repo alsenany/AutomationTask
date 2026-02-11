@@ -11,13 +11,11 @@ public abstract class BasePage {
     public WebDriver driver;
     public WebDriverWait wait;
 
-    // Default wait timeout (seconds)
-    public static final long DEFAULT_TIMEOUT = 10;
 
     //EXPLICIT WAIT (WebDriverWait)
     public BasePage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(DEFAULT_TIMEOUT));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 
     public WebElement waitUntilVisible(By locator) {
@@ -27,7 +25,6 @@ public abstract class BasePage {
     public WebElement waitUntilClickable(By locator) {
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
-
 
     public void click(By locator) {
         waitUntilClickable(locator).click();

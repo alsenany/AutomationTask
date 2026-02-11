@@ -3,10 +3,8 @@ package test;
 import core.Main;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.LoginPage;
 
-import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,11 +28,6 @@ public class test {
 
     @AfterEach
     public void tearDown() {
-        try {
-        new WebDriverWait(Main.getDriver(), Duration.ofSeconds(15)).until(driver -> false);
-        }
-        catch ( Exception ignored)
-        {}
         Main.quitDriver();
     }
 
@@ -111,7 +104,7 @@ public class test {
                 .submit();
 
         assertFalse(login.isLoggedIn(), "Expected error when both fields are empty.");
-        // The isLoggedIn method should returns false and our test case will pass.
+        // isLoggedIn method should return false and our test case will pass.
 
     }
 
