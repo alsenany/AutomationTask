@@ -16,6 +16,7 @@ public class Main {
         }
         DRIVER.set(driverManager.createDriver());
         getDriver().manage().window().maximize();
+        
     }
 
     public static WebDriver getDriver() {
