@@ -6,6 +6,7 @@ public class Main {
     private static final ThreadLocal<WebDriver> DRIVER = new ThreadLocal<>();
 
     public static void startDriver() {
+
         String browser = System.getProperty("browser", "chrome").toLowerCase();
 
         DriverManager driverManager;
@@ -15,10 +16,9 @@ public class Main {
             default -> throw new IllegalArgumentException("Unsupported browser: " + browser);
         }
         DRIVER.set(driverManager.createDriver());
-        getDriver().manage().window().maximize();
-        
-    }
 
+        getDriver().manage().window().maximize();
+    }
     public static WebDriver getDriver() {
         WebDriver driver = DRIVER.get();
         if (driver == null) {

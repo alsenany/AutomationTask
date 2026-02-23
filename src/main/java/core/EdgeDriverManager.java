@@ -3,6 +3,7 @@ package core;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 
 public class EdgeDriverManager implements DriverManager {
 
@@ -10,6 +11,6 @@ public class EdgeDriverManager implements DriverManager {
     public WebDriver createDriver()
     {
         WebDriverManager.edgedriver().setup();
-        return new ChromeDriver() ;
+        return new EdgeDriver() ;
     }
 }

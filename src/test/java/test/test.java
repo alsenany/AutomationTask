@@ -5,7 +5,6 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import pages.LoginPage;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class test {
@@ -107,6 +106,5 @@ public class test {
         // isLoggedIn method should return false and our test case will pass.
 
     }
-
 
 }

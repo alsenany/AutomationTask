@@ -18,9 +18,11 @@ qa-automation-framework/
    main/java/core/BasePage
    main/java/core/Main   
    main/java/pages/LoginPage
+   main/java/pages/RegistrationPage
   
    test/java/test package/test
- 
+   test/java/test package/Registrationtest
+
  target/
 ```
 
