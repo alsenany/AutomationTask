@@ -11,8 +11,8 @@ public class RegistrationPage extends BasePage {
     private final By confirmPasswordInput = By.id("confirmPassword");
     private final By registerBtn = By.cssSelector("button[type='submit']"); // //*[@id="root"]/div[2]/div/div/div/div/form/button
 
-    private final By emailError = By.xpath("//div[contains(@class,'alert-danger') and contains(.,'Email is required')]");
-    private final By confirmPwdError = By.xpath("//div[contains(@class,'alert-danger') and contains(.,'Passwords do not match')]");
+    private final By confirmPwdError = By.xpath("//div[contains(text(),'Passwords do not match')]") ;
+    private final By emailError= By.xpath("//div[contains(text(),'Email is required')]");
 
     private final By ruleMinLength = By.xpath("//*[contains(text(),'At least 8')]");
     private final By ruleUppercase = By.xpath("//*[contains(text(),'uppercase')]");
@@ -20,7 +20,7 @@ public class RegistrationPage extends BasePage {
     private final By ruleNumber = By.xpath("//*[contains(text(),'number')]");
     private final By ruleSpecial = By.xpath("//*[contains(text(),'special')]");
 
-    private final By successBanner = By.xpath("//*[contains(text(),'Registration successful')]");
+    private final By successBanner = By.xpath("//div[contains(text(),'Registration Successful')]");
 
     public RegistrationPage(WebDriver driver) {
         super(driver);
@@ -28,6 +28,9 @@ public class RegistrationPage extends BasePage {
 
     public RegistrationPage open(String url) {
         goTo(url);
+
+        BasePage.waitForPageToLoad(driver);
+
         waitUntilVisible(registerBtn);
         return this;
     }
@@ -48,24 +51,24 @@ public class RegistrationPage extends BasePage {
     }
 
     public RegistrationPage clickRegister() {
+        waitUntilClickable(registerBtn) ;
         click(registerBtn);
         return this;
     }
 
     public boolean isSuccessBannerVisible() {
+        waitUntilVisible(successBanner) ;
         return isDisplayed(successBanner);
     }
 
     public boolean isEmailErrorVisible() {
+        waitUntilVisible(emailError) ;
         return isDisplayed(emailError);
     }
 
-    public String getConfirmPasswordError() {
-        try {
-            return waitUntilVisible(confirmPwdError).getText().trim();
-        } catch (TimeoutException e) {
-            return "";
-        }
+    public boolean getConfirmPasswordError() {
+        waitUntilVisible(confirmPwdError) ;
+       return isDisplayed(confirmPwdError) ;
     }
 
     public boolean ruleMinLengthPassed() {

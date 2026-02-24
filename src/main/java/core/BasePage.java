@@ -24,6 +24,11 @@ public abstract class BasePage {
     public WebElement waitUntilClickable(By locator) {
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
+    public static void waitForPageToLoad(WebDriver driver) {
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(webDriver -> ((JavascriptExecutor) webDriver)
+                        .executeScript("return document.readyState").equals("complete"));
+    }
 
     public void click(By locator) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));

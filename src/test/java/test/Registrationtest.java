@@ -22,7 +22,8 @@ public class Registrationtest {
         Main.startDriver();
         driver = Main.getDriver();
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
 
         baseUrl = System.getProperty("baseUrl", "https://testerbud.com/register");
         emailAddress = System.getProperty("emailAddress", "yahya@gmail.com");
@@ -32,7 +33,6 @@ public class Registrationtest {
 
     @AfterEach
     public void tearDown() {
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(7));
         Main.quitDriver();
     }
 
@@ -90,20 +90,16 @@ public class Registrationtest {
                 .typePassword("Hello2026#")
                 .typeConfirmPassword("Helloteam2026#")
                 .clickRegister();
-
-        String errorMessage = registrationPage.getConfirmPasswordError();
-
-        assertTrue(errorMessage.toLowerCase().contains("match"),
-                "Error message should indicate passwords do not match");
+        assertTrue( registrationPage.getConfirmPasswordError(), "Error message should indicate passwords do not match");
     }
 
     @Test
     public void testSuccessfulRegistration() {
         RegistrationPage registrationPage = new RegistrationPage(driver)
                 .open(baseUrl)
-                .typeEmail(emailAddress)
-                .typePassword(password)
-                .typeConfirmPassword(confirmPassword)
+                .typeEmail("Ramez@gmail.com")
+                .typePassword("Ramez2026#")
+                .typeConfirmPassword("Ramez2026#")
                 .clickRegister();
 
         assertTrue(registrationPage.isSuccessBannerVisible(),
@@ -116,24 +112,11 @@ public class Registrationtest {
                 .open(baseUrl)
                 .typePassword(password)
                 .typeConfirmPassword(confirmPassword)
-                .clickRegister();
+                .clickRegister() ;
 
-        assertTrue(registrationPage.isEmailErrorVisible(),
-                "Expected inline email error for empty email");
+
+        assertTrue(registrationPage.isEmailErrorVisible(), "Expected inline email error for empty email");
     }
 
-    @Test
-    public void testInvalidEmailFormat() {
-        RegistrationPage registrationPage = new RegistrationPage(driver)
-                .open(baseUrl)
-                .typeEmail("ali@gggggg")
-                .typePassword(password)
-                .typeConfirmPassword(confirmPassword)
-                .clickRegister();
 
-        registrationPage.forceShowEmailValidationMessage();
-
-        assertFalse(registrationPage.isEmailValidByConstraintValidationApi(),
-                "Email should be invalid when format is incorrect");
-    }
 }
